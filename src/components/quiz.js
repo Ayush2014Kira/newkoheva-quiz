@@ -22,24 +22,17 @@ var answerArray = [];
 function Quizpage() {
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("test");
-  // const [winners, setWinners] = useState([]);
+  const [id, setID] = useState("");
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isWinner, setIsWinner] = useState(false);
-  const [pr, setpr] = useState(0);
-  const handleCallback = (childData, number, prox) => {
-    console.log(prox, "prosss");
+  const handleCallback = (childData, number, id) => {
     // console.log(childData, number);
     setUsername(childData);
     setPhoneNumber(number);
-    setpr(prox + pr);
-
+    setID(id);
     setStep(step + 1);
   };
-
-  useEffect(() => {
-    console.log(pr, "ayu");
-  }, [pr]);
 
   const handleNextCallback = (childData, prox) => {
     answerArray.push(childData.isChoiceCorrect);
@@ -54,6 +47,7 @@ function Quizpage() {
         let looserObj = {
           name: username,
           phone: phoneNumber,
+          id: id,
         };
         addDoc(LooserCollecetion, looserObj)
           .then((docRef) => {
@@ -67,6 +61,7 @@ function Quizpage() {
         let winnerObj = {
           name: username,
           phone: phoneNumber,
+          id: id,
         };
 
         const winnersCollection = collection(firestore, "winners");
@@ -105,7 +100,6 @@ function Quizpage() {
   return (
     <>
       <Splash />
-      {/* <Progress strokeLinecap="butt" percent={} /> */}
       {/* {step === 1 && <Splash handleStepChange={handleStepChange} />} */}
       {step === 2 && (
         <GetUserName

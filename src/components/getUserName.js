@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import "../css/getUserName.css";
 import "animate.css";
 
-import {usersData} from '../data/users'
-
-
+import { usersData } from "../data/users";
 import { Radio, Select, Space, Input } from "antd";
 
 function GetUserName(props) {
   const [name, setName] = useState("");
+  const [id, setID] = useState("");
+
   const [phone, setPhone] = useState();
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isPhoneEmpty, setIsPhoneEmpty] = useState(true);
@@ -22,18 +22,18 @@ function GetUserName(props) {
       return; // Don't proceed
     }
 
-    props.parentCallback(name, phone);
+    props.parentCallback(name, phone, id);
   };
 
   const handleChange = (e, l) => {
     console.log("value", e, l);
     setName(l.label);
+    setID(l.id);
     var s = document.getElementById("start");
     s.focus();
     // setName(l.label);
     // handleStepChange("next");
   };
-
 
   const validatePhone = () => {
     const phonePattern = /^[0-9]{10}$/; // Adjust as needed

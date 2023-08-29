@@ -19,7 +19,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Quizpage from "./components/quiz";
 import WinnerTable from "./components/Winner";
 import LooserList from "./components/lose";
+import { usersData } from "./data/users";
 
+// const winnersCollection = collection(firestore, "users");
+// for (let index = 0; index < usersData.length; index++) {
+//   const obj = {
+//     name: usersData[index].label,
+//   };
+
+//   // Add the winner data to Firestore
+//   addDoc(winnersCollection, obj)
+//     .then((docRef) => {
+//       console.log("Document written with ID: ", docRef.id);
+//     })
+//     .catch((e) => {
+//       console.error("Error adding document: ", e);
+//     });
+// }
 function App() {
   return (
     <>

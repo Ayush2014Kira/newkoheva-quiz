@@ -9,10 +9,10 @@ import Splash from "./Splash";
 import GetUserName from "./getUserName";
 import Win from "./Win";
 import Looser from "./Looser";
-import { questionsData } from "../data/questions";
+// import { questionsData } from "../data/questions";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 import { firestore } from "./firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -22,6 +22,8 @@ var answerArray = [];
 function Quizpage() {
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("test");
+  const [questionsData, setQuestionsData] = useState([]);
+
   const [id, setID] = useState("");
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -33,6 +35,20 @@ function Quizpage() {
     setID(id);
     setStep(step + 1);
   };
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const questionsCollection = collection(firestore, "questions");
+      const querySnapshot = await getDocs(questionsCollection);
+      const questionsData = querySnapshot.docs.map((doc, index) => {
+        const data = doc.data();
+        return { ...data, index: index + 1 };
+      });
+      setQuestionsData(questionsData);
+    };
+
+    fetchQuestions();
+  }, []);
 
   const handleNextCallback = (childData, prox) => {
     answerArray.push(childData.isChoiceCorrect);

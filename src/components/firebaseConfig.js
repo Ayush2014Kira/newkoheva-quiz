@@ -7,14 +7,14 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAgjvHdlJNcsOJbAhUoHJZt0PPOgh4he3w",
-  authDomain: "koheva-quiz.firebaseapp.com",
-  projectId: "koheva-quiz",
-  storageBucket: "koheva-quiz.appspot.com",
-  messagingSenderId: "209021207198",
-  appId: "1:209021207198:web:d5b786f7d81cc7a744318f",
-  measurementId: "G-YCB1Y8SXX1",
+  apiKey: "AIzaSyDPCiN5nshQAZH94oYPTvw6Vg9wRJPw6CA",
+  authDomain: "koheva-quiz-8e4d4.firebaseapp.com",
+  projectId: "koheva-quiz-8e4d4",
+  storageBucket: "koheva-quiz-8e4d4.appspot.com",
+  messagingSenderId: "738454897301",
+  appId: "1:738454897301:web:bedc153b28bc5f0699519c",
 };
 
 // Initialize Firebase

@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/getUserName.css";
 import "animate.css";
-
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "./firebaseConfig";
 import { usersData } from "../data/users";
 import { Radio, Select, Space, Input } from "antd";
 
 function GetUserName(props) {
   const [name, setName] = useState("");
   const [id, setID] = useState("");
-
+  const [filteredNameList, setFilteredNameList] = useState([]);
   const [phone, setPhone] = useState();
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isPhoneEmpty, setIsPhoneEmpty] = useState(true);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [isNameSelected, setIsNameSelected] = useState(false);
-
+  const [loosers, setLoosers] = useState([]);
+  const [usersApi, setUsersApi] = useState([]);
   const onTrigger = () => {
     setIsButtonClicked(true);
 
@@ -24,6 +26,57 @@ function GetUserName(props) {
 
     props.parentCallback(name, phone, id);
   };
+  const [winners, setWinners] = useState([]);
+  console.log(filteredNameList, "filteredNameList");
+  useEffect(() => {
+    const fetchusers = async () => {
+      const usersCollection = collection(firestore, "users");
+      const querySnapshot = await getDocs(usersCollection);
+      console.log(querySnapshot.docs, usersCollection, "usersCollection");
+      const userData = querySnapshot.docs.map((doc, index) => {
+        const data = doc.data();
+        console.log(doc.id, "id query");
+        return { ...data, value: index + 1, label: data.name, id: doc.id };
+      });
+      setUsersApi(userData);
+    };
+    const fetchWinners = async () => {
+      const winnersCollection = collection(firestore, "winners");
+      const querySnapshot = await getDocs(winnersCollection);
+      const winnersData = querySnapshot.docs.map((doc, index) => {
+        const data = doc.data();
+        return { ...data, index: index + 1 };
+      });
+      setWinners(winnersData);
+    };
+    const fetchLooser = async () => {
+      const winnersCollection = collection(firestore, "loosers");
+
+      const querySnapshot = await getDocs(winnersCollection);
+      const loosersData = querySnapshot.docs.map((doc, index) => {
+        const data = doc.data();
+        return { ...data, index: index + 1 };
+      });
+      setLoosers(loosersData);
+    };
+    fetchusers();
+    fetchWinners();
+    fetchLooser();
+  }, []);
+  // const difference = [];
+  console.log(usersApi, "usersApi");
+  useEffect(() => {
+    const mergerdusers = [...loosers, ...winners];
+
+    const difference = usersApi.filter(
+      (x) => !mergerdusers.find((rm) => rm.id === x.id)
+    );
+
+    console.log(winners, loosers, "winners");
+    console.log(difference, "difference");
+
+    setFilteredNameList(difference);
+  }, [winners, loosers]);
 
   const handleChange = (e, l) => {
     console.log("value", e, l);
@@ -66,7 +119,7 @@ function GetUserName(props) {
               handleChange(e, l);
               setIsNameSelected(true);
             }}
-            options={usersData}
+            options={filteredNameList}
             // className={isButtonClicked && !isNameSelected ? "" : "invalid"}
           />
           {isButtonClicked && !isNameSelected && (

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "../css/getUserName.css";
 import "animate.css";
 
+import {usersData} from '../data/users'
+
+
 import { Radio, Select, Space, Input } from "antd";
 
 function GetUserName(props) {
@@ -19,7 +22,7 @@ function GetUserName(props) {
       return; // Don't proceed
     }
 
-    props.parentCallback(name, phone, 25);
+    props.parentCallback(name, phone);
   };
 
   const handleChange = (e, l) => {
@@ -31,32 +34,6 @@ function GetUserName(props) {
     // handleStepChange("next");
   };
 
-  const options = [
-    {
-      value: "1",
-      label: "AnmoldeepKaur",
-    },
-    {
-      value: "2",
-      label: "Kiran Sir",
-    },
-    {
-      value: "3",
-      label: "BhumiMa'am",
-    },
-    {
-      value: "4",
-      label: "Rahoul",
-    },
-    {
-      value: "5",
-      label: "Kevin",
-    },
-    {
-      value: "6",
-      label: "Yash",
-    },
-  ];
 
   const validatePhone = () => {
     const phonePattern = /^[0-9]{10}$/; // Adjust as needed
@@ -89,7 +66,7 @@ function GetUserName(props) {
               handleChange(e, l);
               setIsNameSelected(true);
             }}
-            options={options}
+            options={usersData}
             // className={isButtonClicked && !isNameSelected ? "" : "invalid"}
           />
           {isButtonClicked && !isNameSelected && (

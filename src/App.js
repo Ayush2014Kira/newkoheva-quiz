@@ -1,60 +1,27 @@
-import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Progress, Space } from "antd";
-
+import { collection, addDoc } from "firebase/firestore";
+import { questionsData } from "./data/questions"; // Update the path accordingly
+import Splash from "./components/Splash"; // Update paths for other components
+import GetUserName from "./components/getUserName";
 import FirstQuestion from "./components/FirstQuestion";
 import SecondQuestion from "./components/SecondQuestion";
 import ThirdQuestion from "./components/ThirdQuestion";
 import FourthQuestion from "./components/FourthQuestion";
-import Splash from "./components/Splash";
-import GetUserName from "./components/getUserName";
 import Win from "./components/Win";
-import Looser from "./components/Looser";
+import { firestore } from "./components/firebaseConfig";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import CProcress from "./components/procress";
-import "../node_modules/@syncfusion/ej2-calendars/styles/material.css";
-import "../node_modules/@syncfusion/ej2-base/styles/material.css";
-import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
-import "../node_modules/@syncfusion/ej2-dropdowns/styles/material.css";
-import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
-import "../node_modules/@syncfusion/ej2-navigations/styles/material.css";
-import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
-import "../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
-import "../node_modules/@syncfusion/ej2-react-grids/styles/material.css";
-const quiz = [
-  {
-    question: " Which One is Koheva Product & not Juice?",
-    choice1: "Option A",
-    choice2: "Option B",
-    answer: "Option B",
-  },
-  {
-    question: "Which One is Koheva Product & not Juice?",
-    choice1: "Option A",
-    choice2: "Option B",
-    answer: "Option B",
-  },
-  {
-    question: "Which One is Koheva Product & not Juice?",
-    choice1: "Option A",
-    choice2: "Option B",
-    answer: "Option B",
-  },
-  {
-    question: "Which One is Koheva Product & not Juice?",
-    choice1: "Option A",
-    choice2: "Option B",
-    answer: "Option B",
-  },
-];
+import "./App.css";
 
 const totalSteps = 7;
 var answerArray = [];
+const winners = [];
 
 function App() {
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("test");
+  const [winners, setWinners] = useState([]);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isWinner, setIsWinner] = useState(false);
   const [pr, setpr] = useState(0);
@@ -67,7 +34,13 @@ function App() {
 
     setStep(step + 1);
   };
+  function handleUpload() {
+    if (!winners) {
+      alert("Please choose a file first!");
+    }
 
+    // const storageRef = ref(storage, `/files/${file.name}`);
+  }
   useEffect(() => {
     console.log(pr, "ayu");
   }, [pr]);
@@ -79,14 +52,42 @@ function App() {
 
     if (step === 6) {
       if (answerArray.includes(false)) {
+        const LooserCollecetion = collection(firestore, "loosers");
         setIsWinner(false);
+        let looserObj = {
+          name: username,
+          phone: phoneNumber,
+        };
+        addDoc(LooserCollecetion, looserObj)
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+          })
+          .catch((e) => {
+            console.error("Error adding document: ", e);
+          });
       } else {
         setIsWinner(true);
+        let winnerObj = {
+          name: username,
+          phone: phoneNumber,
+        };
+        winners.push(winnerObj);
+
+        const winnersCollection = collection(firestore, "winners");
+
+        // Add the winner data to Firestore
+        addDoc(winnersCollection, winnerObj)
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+          })
+          .catch((e) => {
+            console.error("Error adding document: ", e);
+          });
       }
     }
   };
 
-  const handleStepChange = (type) => {
+  const handleStepChange = async (type) => {
     if (step === totalSteps && type === "next") {
       return alert("You have already completed the last step");
     }
@@ -118,7 +119,7 @@ function App() {
       )}{" "}
       {step === 3 && (
         <FirstQuestion
-          que={quiz[0]}
+          que={questionsData[0]}
           step={step}
           name={username}
           handleNextCallback={handleNextCallback}
@@ -126,21 +127,21 @@ function App() {
       )}
       {step === 4 && (
         <SecondQuestion
-          que={quiz[1]}
+          que={questionsData[1]}
           step={step}
           handleNextCallback={handleNextCallback}
         />
       )}
       {step === 5 && (
         <ThirdQuestion
-          que={quiz[2]}
+          que={questionsData[2]}
           step={step}
           handleNextCallback={handleNextCallback}
         />
       )}
       {step === 6 && (
         <FourthQuestion
-          que={quiz[3]}
+          que={questionsData[3]}
           step={step}
           handleNextCallback={handleNextCallback}
         />

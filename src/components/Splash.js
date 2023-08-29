@@ -4,6 +4,8 @@ import "animate.css";
 import "../css/splash.css";
 
 export default function Splash() {
+
+  localStorage.clear()
   return (
     <div className="splash_container d-flex flex-row justify-content-center  align-items-center">
       <img

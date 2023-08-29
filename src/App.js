@@ -1,26 +1,30 @@
+import "./App.css";
 import React, { useState, useEffect } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { questionsData } from "./data/questions"; // Update the path accordingly
-import Splash from "./components/Splash"; // Update paths for other components
-import GetUserName from "./components/getUserName";
+import { Progress, Space } from "antd";
+
 import FirstQuestion from "./components/FirstQuestion";
 import SecondQuestion from "./components/SecondQuestion";
 import ThirdQuestion from "./components/ThirdQuestion";
 import FourthQuestion from "./components/FourthQuestion";
+import Splash from "./components/Splash";
+import GetUserName from "./components/getUserName";
 import Win from "./components/Win";
+import Looser from "./components/Looser";
+import {questionsData} from '../src/data/questions'
+
 import { firestore } from "./components/firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+
 
 const totalSteps = 7;
 var answerArray = [];
-const winners = [];
 
 function App() {
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("test");
-  const [winners, setWinners] = useState([]);
+  // const [winners, setWinners] = useState([]);
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isWinner, setIsWinner] = useState(false);
@@ -34,16 +38,11 @@ function App() {
 
     setStep(step + 1);
   };
-  function handleUpload() {
-    if (!winners) {
-      alert("Please choose a file first!");
-    }
 
-    // const storageRef = ref(storage, `/files/${file.name}`);
-  }
   useEffect(() => {
     console.log(pr, "ayu");
   }, [pr]);
+
   const handleNextCallback = (childData, prox) => {
     answerArray.push(childData.isChoiceCorrect);
     setStep(childData.step + 1);
@@ -71,7 +70,6 @@ function App() {
           name: username,
           phone: phoneNumber,
         };
-        winners.push(winnerObj);
 
         const winnersCollection = collection(firestore, "winners");
 
@@ -87,7 +85,7 @@ function App() {
     }
   };
 
-  const handleStepChange = async (type) => {
+  const handleStepChange = (type) => {
     if (step === totalSteps && type === "next") {
       return alert("You have already completed the last step");
     }

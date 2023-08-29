@@ -223,14 +223,22 @@
 
 
 
+  
 
 
   :root {
+    --background: #e1cec3;
+    --base: #9d613f;
+    --accent: #be8666;
+    --shadow: #cda48c;
+  }
+
+  /* :root {
     --background: #f3a683;
     --base: #303952;
     --accent: #786fa6;
     --shadow: #e77f67;
-  }
+  } */
   
   /* html {
     background: var(--background);
@@ -247,8 +255,10 @@
   } */
   
   .cool {
-    font: bold 4rem/1.2 sans-serif;
+    font: bold 2rem/1.2 sans-serif;
+    letter-spacing: 2.5px;
     /* max-width: 20rem; */
+    animation:fade-Out 2s;
   }
   .cool span {
     color: var(--shadow);
@@ -301,13 +311,13 @@
     }
   }
   .cool span::before {
-    -webkit-animation: max-height 0.4s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
-            animation: max-height 0.4s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
+    -webkit-animation: max-height 1s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
+            animation: max-height 1s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
     color: var(--accent);
   }
   .cool span::after {
-    -webkit-animation: max-width 0.7s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
-            animation: max-width 0.7s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
+    -webkit-animation: max-width 2s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
+            animation: max-width 2s cubic-bezier(0.61, 1, 0.88, 1) 1 normal both;
     color: var(--base);
   }
   .cool span::before, .cool span::after {
@@ -356,5 +366,14 @@
     }
     to {
       max-height: 100%;
+    }
+  }
+
+  @keyframes fade-Out {
+    from {
+      transform: scale(2);
+    }
+    to {
+      transform: scale(1);
     }
   }

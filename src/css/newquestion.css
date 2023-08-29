@@ -1,0 +1,63 @@
+.row {
+  display: flow !important;
+}
+
+@media (min-width: 768px) {
+  .main_que_container {
+    margin: 0px auto;
+  }
+}
+@media (min-width: 992px) {
+  .main_que_container {
+    margin: 0px auto;
+  }
+}
+@media (min-width: 1024px) {
+  .main_que_container {
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main_que_container {
+    margin: 0 auto;
+  }
+}
+
+.questions {
+  font-size: 30px;
+  font-family: 'aileronlight';
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-progress .ant-progress-text {
+  display: none !important;
+}
+
+/* .replay-button{
+        display: none;
+    } */
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-progress .ant-progress-inner {
+  transition: all 2s ease !important;
+}
+
+progress[value]::-webkit-progress-value {
+  transition: width 2s;
+  background: #784024;
+}
+
+progress::-webkit-progress-bar {
+  background-color: white;
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-checkbox + span {
+  line-height: 25px !important;
+  font-family: "aileronlight" !important;
+  font-weight: 300 !important;
+}
+
+
+.fad_out{
+  opacity: 0;
+  transition: opacity 0.5s ease; 
+}

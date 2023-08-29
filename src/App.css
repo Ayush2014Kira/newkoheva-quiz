@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'aileronlight';
+    src: url('fonts/aileron.light-webfont.woff2') format('woff2'),
+         url('fonts/aileron.light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+body{
+    background-color: #e1cec3 !important;
+    font-family: 'aileronlight';
+    color:#0e0e0e;
+    overflow: hidden; /* Hide scrollbars */
+}

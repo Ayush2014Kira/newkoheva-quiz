@@ -26,8 +26,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" Component={Quizpage} />
-          <Route path="/winners" Component={WinnerTable} />
-          <Route path="/loosers" Component={LooserList} />
+          <Route path="/lucky" Component={WinnerTable} />
+          <Route path="/unlucky" Component={LooserList} />
         </Routes>
       </BrowserRouter>
     </>

@@ -25,7 +25,7 @@ function WinnerTable() {
       <div className="mt-4">
         <img src={logo} alt="koheva logo" width={400} />
       </div>
-      <div className="winnerlist-title h2 display-6">Winners' Name List</div>
+      <div className="winnerlist-title h2 display-6">Fortunate Users'</div>
       <div className="">
         {winners &&
           winners.map((data) => (

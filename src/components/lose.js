@@ -25,7 +25,7 @@ function LooserList() {
       <div className="mt-4">
         <img src={logo} alt="koheva logo" width={400} />
       </div>
-      <div className="winnerlist-title h2 display-6">Loosers' Name List</div>
+      <div className="winnerlist-title h2 display-6">Users' With Hard Luck</div>
       <div className="">
         {loosers &&
           loosers.map((data) => (

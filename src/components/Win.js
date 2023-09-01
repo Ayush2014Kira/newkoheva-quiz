@@ -78,7 +78,6 @@ function Win(props) {
     renderConfetti();
   }, []);
 
-  
   const handleReplayClick = () => {
     // Reset animation and reload page
     $(document).trigger("animate:reset");
@@ -92,18 +91,20 @@ function Win(props) {
           <div className="winner_container">
             <div class="congrats">
               <div class="cool mt-5">
-                <span data-text="Congratulations!">Congratulations!</span>
+                <span data-text={`Congratulations!, `}>
+                  Congratulations!,&nbsp;
+                </span>
+                <span data-text={`${props.name}`}>{props.name}</span>
               </div>
               {animationCompleted && (
                 <button
                   className="replay-button animate__animated animate__bounceIn mt-5"
-                  style={{zIndex:"5000"}}
+                  style={{ zIndex: "5000" }}
                   onClick={handleReplayClick}
                 >
                   Restart
                 </button>
               )}
-
             </div>
           </div>
         </div>

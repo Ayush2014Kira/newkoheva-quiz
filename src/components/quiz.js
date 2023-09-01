@@ -23,16 +23,12 @@ function Quizpage() {
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState("test");
   const [questionsData, setQuestionsData] = useState([]);
-
-  const [id, setID] = useState("");
-
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isWinner, setIsWinner] = useState(false);
-  const handleCallback = (childData, number, id) => {
+  const handleCallback = (childData, number) => {
     // console.log(childData, number);
     setUsername(childData);
     setPhoneNumber(number);
-    setID(id);
     setStep(step + 1);
   };
 
@@ -63,7 +59,6 @@ function Quizpage() {
         let looserObj = {
           name: username,
           phone: phoneNumber,
-          id: id,
         };
         addDoc(LooserCollecetion, looserObj)
           .then((docRef) => {
@@ -77,7 +72,6 @@ function Quizpage() {
         let winnerObj = {
           name: username,
           phone: phoneNumber,
-          id: id,
         };
 
         const winnersCollection = collection(firestore, "winners");
@@ -152,7 +146,7 @@ function Quizpage() {
           handleNextCallback={handleNextCallback}
         />
       )}
-      {step === 7 && <Win isWinner={isWinner} />}
+      {step === 7 && <Win isWinner={isWinner} name={username} />}
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/getUserName.css";
 import "animate.css";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { firestore } from "./firebaseConfig";
 import { usersData } from "../data/users";
 import { Radio, Select, Space, Input } from "antd";
@@ -14,51 +14,77 @@ function GetUserName(props) {
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isPhoneEmpty, setIsPhoneEmpty] = useState(true);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [isNameSelected, setIsNameSelected] = useState(false);
+  const [isNameEmpty, setIsNameEmpty] = useState(true);
   const [loosers, setLoosers] = useState([]);
   const [usersApi, setUsersApi] = useState([]);
+  const [isRegistered, setisRegistered] = useState(true);
+
   const onTrigger = () => {
     setIsButtonClicked(true);
 
-    if (!isNameSelected || !isPhoneValid || isPhoneEmpty) {
+    if (isNameEmpty || !isPhoneValid || isPhoneEmpty) {
       return; // Don't proceed
     }
 
-    props.parentCallback(name, phone, id);
+    let existingUser = usersApi.find((user) => user.phone === phone);
+    if (existingUser === undefined && existingUser !== null) {
+      addUser();
+      props.parentCallback(name, phone);
+    } else {
+      console.log("existingUser", existingUser);
+    }
+  };
+
+  const addUser = () => {
+    let userObj = {
+      name: name,
+      phone: phone,
+    };
+
+    const userCollection = collection(firestore, "users");
+
+    addDoc(userCollection, userObj)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        usersApi.push(userObj);
+      })
+      .catch((e) => {
+        console.error("Error adding document: ", e);
+      });
   };
   const [winners, setWinners] = useState([]);
   console.log(filteredNameList, "filteredNameList");
-  useEffect(() => {
-    const fetchusers = async () => {
-      const usersCollection = collection(firestore, "users");
-      const querySnapshot = await getDocs(usersCollection);
-      console.log(querySnapshot.docs, usersCollection, "usersCollection");
-      const userData = querySnapshot.docs.map((doc, index) => {
-        const data = doc.data();
-        console.log(doc.id, "id query");
-        return { ...data, value: index + 1, label: data.name, id: doc.id };
-      });
-      setUsersApi(userData);
-    };
-    const fetchWinners = async () => {
-      const winnersCollection = collection(firestore, "winners");
-      const querySnapshot = await getDocs(winnersCollection);
-      const winnersData = querySnapshot.docs.map((doc, index) => {
-        const data = doc.data();
-        return { ...data, index: index + 1 };
-      });
-      setWinners(winnersData);
-    };
-    const fetchLooser = async () => {
-      const winnersCollection = collection(firestore, "loosers");
+  const fetchusers = async () => {
+    const usersCollection = collection(firestore, "users");
+    const querySnapshot = await getDocs(usersCollection);
+    console.log(querySnapshot.docs, usersCollection, "usersCollection");
+    const userData = querySnapshot.docs.map((doc, index) => {
+      const data = doc.data();
+      console.log(doc.id, "id query");
+      return { ...data };
+    });
+    setUsersApi(userData);
+  };
+  const fetchWinners = async () => {
+    const winnersCollection = collection(firestore, "winners");
+    const querySnapshot = await getDocs(winnersCollection);
+    const winnersData = querySnapshot.docs.map((doc, index) => {
+      const data = doc.data();
+      return { ...data, index: index + 1 };
+    });
+    setWinners(winnersData);
+  };
+  const fetchLooser = async () => {
+    const winnersCollection = collection(firestore, "loosers");
 
-      const querySnapshot = await getDocs(winnersCollection);
-      const loosersData = querySnapshot.docs.map((doc, index) => {
-        const data = doc.data();
-        return { ...data, index: index + 1 };
-      });
-      setLoosers(loosersData);
-    };
+    const querySnapshot = await getDocs(winnersCollection);
+    const loosersData = querySnapshot.docs.map((doc, index) => {
+      const data = doc.data();
+      return { ...data, index: index + 1 };
+    });
+    setLoosers(loosersData);
+  };
+  useEffect(() => {
     fetchusers();
     fetchWinners();
     fetchLooser();
@@ -93,39 +119,35 @@ function GetUserName(props) {
     setIsPhoneValid(phonePattern.test(phone));
     setIsPhoneEmpty(phone === "");
   };
+  const validateName = () => {
+    const phonePattern = /^[0-9]{10}$/; // Adjust as needed
+    // setIsPhoneValid(phonePattern.test(phone));
+    setIsNameEmpty(name === "");
+  };
 
   return (
     <div>
       <div className="contact-form margin-top animate__animated animate__fadeIn">
         <h2>Let's start</h2>
         <div>
-          <p className="mt-2">Your Name</p>
-          <Select
-            showSearch
-            style={{
-              width: "100%",
+          <p className="mt-2">Your Name *</p>
+          <Input
+            type="text"
+            placeholder="Enter Your Name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setIsNameEmpty(e.target.value === "");
             }}
-            placeholder="Search to Select"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            onChange={(e, l) => {
-              handleChange(e, l);
-              setIsNameSelected(true);
-            }}
-            options={filteredNameList}
+            onBlur={validateName}
+            className={isNameEmpty ? "" : "invalid"}
+            required
             // className={isButtonClicked && !isNameSelected ? "" : "invalid"}
           />
-          {isButtonClicked && !isNameSelected && (
-            <p className="error-message">*Please select your name.</p>
+          {isButtonClicked && isNameEmpty && (
+            <p className="error-message">*Please Enter your name.</p>
           )}
-          <p className="mt-2">Mobile No.</p>
+          <p className="mt-2">Mobile No. *</p>
           <Input
             placeholder="Enter Your Phone"
             type="number"

@@ -5,6 +5,7 @@
 }
 
 .que_container{
+  width: 640px;
   opacity: 1;
   transition: all 2s ease;
 }

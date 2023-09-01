@@ -183,3 +183,19 @@ input::-webkit-inner-spin-button {
 input[type=number],input[type=text]{
   -moz-appearance: textfield;
 }
+
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+    color:#9d613f !important;
+    background: #e1cec3 !important;
+}
+
+
+.Toastify__progress-bar-theme--colored.Toastify__progress-bar--error, .Toastify__progress-bar-theme--colored.Toastify__progress-bar--info, .Toastify__progress-bar-theme--colored.Toastify__progress-bar--success, .Toastify__progress-bar-theme--colored.Toastify__progress-bar--warning {
+    background: #9d613f !important;
+}
+
+.Toastify__close-button {
+    color: #9d613f !important;
+
+}

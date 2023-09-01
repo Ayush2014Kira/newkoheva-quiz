@@ -6,6 +6,9 @@ import { firestore } from "./firebaseConfig";
 import { usersData } from "../data/users";
 import { Radio, Select, Space, Input } from "antd";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function GetUserName(props) {
   const [name, setName] = useState("");
   const [id, setID] = useState("");
@@ -32,6 +35,8 @@ function GetUserName(props) {
       props.parentCallback(name, phone);
     } else {
       console.log("existingUser", existingUser);
+      // toast("User already played with this number!");
+      toast.error("User already played with this number!");
     }
   };
 
@@ -127,6 +132,18 @@ function GetUserName(props) {
 
   return (
     <div>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="contact-form margin-top animate__animated animate__fadeIn">
         <h2>Let's start</h2>
         <div>

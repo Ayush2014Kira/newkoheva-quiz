@@ -3,7 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "./firebaseConfig"; // Update the path
 import "./../css/winnerlist.css";
 import "animate.css";
-import logo from "./../image/logo.png";
+import logo from "./../image/image2.png";
 function WinnerTable() {
   const [winners, setWinners] = useState([]);
 

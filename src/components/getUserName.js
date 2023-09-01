@@ -157,7 +157,7 @@ function GetUserName(props) {
               setIsNameEmpty(e.target.value === "");
             }}
             onBlur={validateName}
-            className={isNameEmpty ? "" : "invalid"}
+            className={!isNameEmpty ? "" : "invalid"}
             required
             // className={isButtonClicked && !isNameSelected ? "" : "invalid"}
           />
@@ -188,7 +188,6 @@ function GetUserName(props) {
             id="start"
             value="START"
             onClick={() => onTrigger()}
-            // disabled={isPhoneEmpty || !isPhoneValid || !isNameSelected}
           />
         </div>
       </div>

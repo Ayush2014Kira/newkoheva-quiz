@@ -1879,3 +1879,15 @@ button {
 		height: auto;
 		margin-top:20vh	}
 }
+
+@media (min-width:500px) and (max-width:600px) {
+	.looser{
+		font-size: 28px;
+	}
+}
+
+@media (min-width:500px) and (max-width:600px) {
+	.looser{
+		font-size: 32px;
+	}
+}

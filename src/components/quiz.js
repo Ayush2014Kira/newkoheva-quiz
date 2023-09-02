@@ -20,7 +20,7 @@ const totalSteps = 7;
 var answerArray = [];
 
 function Quizpage() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(7);
   const [username, setUsername] = useState("test");
   const [questionsData, setQuestionsData] = useState([]);
   const [phoneNumber, setPhoneNumber] = useState("");
